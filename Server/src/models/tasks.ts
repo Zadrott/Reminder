@@ -5,6 +5,7 @@ interface ITask {
   title: string;
   priority: "low" | "medium" | "high";
   interval: number;
+  userId: string;
 }
 
 // 2. Create a Schema corresponding to the document interface.
@@ -12,6 +13,7 @@ const taskSchema = new Schema<ITask>({
   title: { type: String, required: true },
   priority: { type: String, enum: ["low", "medium", "high"], required: true },
   interval: { type: Number, required: true },
+  userId: { type: String, required: true },
 });
 
 // 3. Create and export a Model.
