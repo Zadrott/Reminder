@@ -4,18 +4,20 @@ import express from "express";
 import { connect } from "mongoose";
 
 import { taskRouter } from "./routes/tasks.route";
+import { userRouter } from "./routes/users.route";
 
-// Load environment variables from the .env file
+// Load and validate environment variables from the .env file
 dotenv.config();
-const { PORT, DB_USER, DB_PASS, DB_HOST, DB_NAME } = process.env;
+const { PORT, DB_USER, DB_PASS, DB_HOST, DB_NAME, USERS_SECRET } = process.env;
 
-if (!DB_USER || !DB_PASS || !DB_HOST || !DB_NAME) {
+if (!DB_USER || !DB_PASS || !DB_HOST || !DB_NAME || USERS_SECRET) {
   console.error(
-    "No DB_USER, DB_PASS, DB_HOST or DB_NAME environment variables not defined in .env"
+    "No DB_USER, DB_PASS, DB_HOST, DB_NAME or USERS_SECRET environment variables not defined in .env"
   );
   process.exit(1);
 }
 
+//Start server if successfully connected to MongoDB
 connect(
   `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`
 )
@@ -24,10 +26,9 @@ connect(
     app.use(cors());
     app.use(express.json());
 
-    // add routers
     app.use("/tasks", taskRouter);
+    app.use("/users", userRouter);
 
-    // start the Express server
     app.listen(PORT ?? 8090, () => {
       console.log(`Server running at http://localhost:${PORT ?? 8090}...`);
     });
