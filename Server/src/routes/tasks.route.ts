@@ -85,7 +85,7 @@ taskRouter.put("/:id", async (req, res) => {
         });
     } else {
       res.status(400).json({
-        error: "You can't modify a task belonging to someone else",
+        error: "You can't modify a task that belongs to someone else",
       });
     }
   });
@@ -111,7 +111,7 @@ taskRouter.delete("/:id", async (req, res) => {
         });
     } else {
       res.status(400).json({
-        error: "You can't delete a task that belong to someone else",
+        error: "You can't delete a task that belongs to someone else",
       });
     }
   });
