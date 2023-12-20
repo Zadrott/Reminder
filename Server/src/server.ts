@@ -10,7 +10,7 @@ import { userRouter } from "./routes/users.route";
 dotenv.config();
 const { PORT, DB_USER, DB_PASS, DB_HOST, DB_NAME, USERS_SECRET } = process.env;
 
-if (!DB_USER || !DB_PASS || !DB_HOST || !DB_NAME || USERS_SECRET) {
+if (!DB_USER || !DB_PASS || !DB_HOST || !DB_NAME || !USERS_SECRET) {
   console.error(
     "No DB_USER, DB_PASS, DB_HOST, DB_NAME or USERS_SECRET environment variables not defined in .env"
   );
