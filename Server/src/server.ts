@@ -5,23 +5,24 @@ import { connect } from "mongoose";
 
 import { taskRouter } from "./routes/tasks.route";
 
-// Load environment variables from the .env file, where the ATLAS_URI is configured
+// Load environment variables from the .env file
 dotenv.config();
-const { PORT, DB_USER, DB_PASS, DB_HOST } = process.env;
+const { PORT, DB_USER, DB_PASS, DB_HOST, DB_NAME } = process.env;
 
-if (!DB_USER || !DB_PASS || !DB_HOST) {
+if (!DB_USER || !DB_PASS || !DB_HOST || !DB_NAME) {
   console.error(
-    "No DB_USER, DB_PASS or DB_HOST environment variable defined in config.env"
+    "No DB_USER, DB_PASS, DB_HOST or DB_NAME environment variables not defined in .env"
   );
   process.exit(1);
 }
 
 connect(
-  `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/?retryWrites=true&w=majority`
+  `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`
 )
   .then(() => {
     const app = express();
     app.use(cors());
+    app.use(express.json());
 
     // add routers
     app.use("/tasks", taskRouter);
