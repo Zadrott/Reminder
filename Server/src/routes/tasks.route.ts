@@ -1,94 +1,103 @@
 import * as express from "express";
-import * as mongodb from "mongodb";
 
-import { collections } from "../database";
+import { Task } from "../models/tasks";
 
 export const taskRouter = express.Router();
 
 taskRouter.use(express.json());
 
 taskRouter.get("/", async (_req, res) => {
-  try {
-    const tasks = await collections.tasks.find({}).toArray();
-    res.status(200).send(tasks);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+  Task.find()
+    .then((tasks) => {
+      console.log(`All tasks returned`);
+      console.log(tasks);
+      res.status(200).json(tasks);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(400).json({
+        error: error,
+      });
+    });
 });
 
 taskRouter.get("/:id", async (req, res) => {
-  try {
-    const id = req?.params?.id;
-    const query = { _id: new mongodb.ObjectId(id) };
-    const task = await collections.tasks.findOne(query);
-
-    if (task) {
-      res.status(200).send(task);
-    } else {
-      res.status(404).send(`Failed to find a task: ID ${id}`);
-    }
-  } catch (error) {
-    res.status(404).send(`Failed to find a task: ID ${req?.params?.id}`);
-  }
+  Task.findOne({
+    _id: req.params.id,
+  })
+    .then((task) => {
+      console.log(`Task found:`);
+      console.log(task);
+      res.status(200).json(task);
+    })
+    .catch((error) => {
+      res.status(404).json({
+        error: error,
+      });
+    });
 });
 
 taskRouter.post("/", async (req, res) => {
-  try {
-    const task = req.body;
+  let receivedTask = req.body;
+  const task = new Task({
+    title: receivedTask.title,
+    priority: receivedTask.priority,
+    interval: receivedTask.interval,
+  });
 
-    const result = await collections.tasks.insertOne(task);
-
-    if (result.acknowledged) {
-      res.status(201).send(`Created a new task: ID ${result.insertedId}.`);
-      console.log("New task created:");
+  task
+    .save()
+    .then(() => {
+      console.log("New task created :");
       console.log(task);
-    } else {
-      res.status(500).send("Failed to create a new task.");
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(400).send(error.message);
-  }
+      res.status(201).json({
+        message: "Task created successfully!",
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(400).json({
+        error: error,
+      });
+    });
 });
 
 taskRouter.put("/:id", async (req, res) => {
-  try {
-    const id = req?.params?.id;
-    const task = req.body;
-    const query = { _id: new mongodb.ObjectId(id) };
-    const result = await collections.tasks.updateOne(query, { $set: task });
+  const id = req?.params?.id;
+  const task = req.body;
 
-    if (result && result.matchedCount) {
-      res.status(200).send(`Updated a task: ID ${id}.`);
-      console.log(`Task ${id} updated:`);
+  Task.updateOne({ _id: id }, task)
+    .then(() => {
+      console.log("Task updated :");
       console.log(task);
-    } else if (!result.matchedCount) {
-      res.status(404).send(`Failed to find a task: ID ${id}`);
-    } else {
-      res.status(304).send(`Failed to update a task: ID ${id}`);
-    }
-  } catch (error) {
-    console.error(error.message);
-    res.status(400).send(error.message);
-  }
+      res.status(201).json({
+        message: "Task updated successfully!",
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(400).json({
+        error: error,
+      });
+    });
 });
 
 taskRouter.delete("/:id", async (req, res) => {
-  try {
-    const id = req?.params?.id;
-    const query = { _id: new mongodb.ObjectId(id) };
-    const result = await collections.tasks.deleteOne(query);
-
-    if (result && result.deletedCount) {
-      res.status(202).send(`Removed a task: ID ${id}`);
-      console.log(`Task ${id} removed`);
-    } else if (!result) {
-      res.status(400).send(`Failed to remove a task: ID ${id}`);
-    } else if (!result.deletedCount) {
-      res.status(404).send(`Failed to find a task: ID ${id}`);
-    }
-  } catch (error) {
-    console.error(error.message);
-    res.status(400).send(error.message);
-  }
+  Task.findOne({ _id: req.params.id }).then((task) => {
+    task
+      .deleteOne({ _id: req.params.id })
+      .then(() => {
+        console.log("Task deleted :");
+        console.log(task);
+        res.status(200).json({
+          message: "Task deleted successfully!",
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(400).json({
+          error: error,
+        });
+      });
+  });
 });

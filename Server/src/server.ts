@@ -1,22 +1,24 @@
 import * as dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
+import { connect } from "mongoose";
 
-import { connectToDatabase } from "./database";
 import { taskRouter } from "./routes/tasks.route";
 
 // Load environment variables from the .env file, where the ATLAS_URI is configured
 dotenv.config();
-const { ATLAS_URI, PORT } = process.env;
+const { PORT, DB_USER, DB_PASS, DB_HOST } = process.env;
 
-if (!ATLAS_URI) {
+if (!DB_USER || !DB_PASS || !DB_HOST) {
   console.error(
-    "No ATLAS_URI environment variable has been defined in config.env"
+    "No DB_USER, DB_PASS or DB_HOST environment variable defined in config.env"
   );
   process.exit(1);
 }
 
-connectToDatabase(ATLAS_URI)
+connect(
+  `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/?retryWrites=true&w=majority`
+)
   .then(() => {
     const app = express();
     app.use(cors());
