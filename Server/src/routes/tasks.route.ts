@@ -7,6 +7,8 @@ export const taskRouter = express.Router();
 
 taskRouter.use(authMiddleware);
 
+//route: GET {BaseUrl}/tasks/
+//description: get all tasks
 taskRouter.get("/", async (_req, res) => {
   Task.find()
     .then((tasks) => {
@@ -22,6 +24,8 @@ taskRouter.get("/", async (_req, res) => {
     });
 });
 
+//route: GET {BaseUrl}/tasks/{id}
+//description: get task by id
 taskRouter.get("/:id", async (req, res) => {
   Task.findOne({
     _id: req.params.id,
@@ -38,12 +42,17 @@ taskRouter.get("/:id", async (req, res) => {
     });
 });
 
+//route: POST {BaseUrl}/tasks/
+//description: create new task
 taskRouter.post("/", async (req, res) => {
-  let receivedTask = req.body;
+  const receivedTask = req.body;
   const task = new Task({
     title: receivedTask.title,
     priority: receivedTask.priority,
-    interval: receivedTask.interval,
+    creationDate: receivedTask.creationDate,
+    dueDate: receivedTask.dueDate,
+    isRepeatingTask: receivedTask.isRepeatingTask,
+    isDone: receivedTask.isDone ?? false,
     userId: receivedTask.userId,
   });
 
@@ -64,15 +73,97 @@ taskRouter.post("/", async (req, res) => {
     });
 });
 
-taskRouter.put("/:id", async (req, res) => {
-  const id = req?.params?.id;
-  const task = req.body;
-  Task.findOne({ _id: req.params.id }).then((task) => {
-    if (req.body.userId == task.userId) {
-      Task.updateOne({ _id: id }, task)
+//route: POST {BaseUrl}/tasks/{id}/complete
+//description: mark task as completed
+taskRouter.post("/:id/complete", async (req, res) => {
+  //Update the isDone property of the task
+  Task.findOne({ _id: req.params.id }).then((storedTask) => {
+    if (req.body.userId == storedTask.userId) {
+      const updatedTask = new Task({
+        _id: storedTask.id,
+        title: storedTask.title,
+        priority: storedTask.priority,
+        creationDate: storedTask.creationDate,
+        dueDate: storedTask.dueDate,
+        isRepeatingTask: storedTask.isRepeatingTask,
+        isDone: true,
+        userId: storedTask.userId,
+      });
+
+      Task.updateOne({ _id: req.params.id }, updatedTask)
         .then(() => {
           console.log("Task updated :");
-          console.log(task);
+          console.log(updatedTask);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(400).json({
+            error: error,
+          });
+        });
+
+      //Create new task if needed
+      if (updatedTask.isRepeatingTask) {
+        const newTask = new Task({
+          title: updatedTask.title,
+          priority: updatedTask.priority,
+          creationDate: updatedTask.dueDate,
+          dueDate: ComputeNextDueDate(
+            updatedTask.creationDate,
+            updatedTask.dueDate
+          ),
+          isRepeatingTask: updatedTask.isRepeatingTask,
+          isDone: false,
+          userId: updatedTask.userId,
+        });
+
+        newTask
+          .save()
+          .then(() => {
+            console.log("New task created :");
+            console.log(newTask);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(400).json({
+              error: error,
+            });
+          });
+      }
+
+      res.status(201).json({
+        message: "Task completed successfully!",
+      });
+    } else {
+      res.status(400).json({
+        error: "You can't complete a task that belongs to someone else",
+      });
+    }
+  });
+});
+
+//route: PUT {BaseUrl}/tasks/{id}
+//description: update task
+taskRouter.put("/:id", async (req, res) => {
+  const receivedTask = req.body;
+
+  Task.findOne({ _id: req.params.id }).then((storedTask) => {
+    if (req.body.userId == storedTask.userId) {
+      const updatedTask = new Task({
+        _id: storedTask.id,
+        title: receivedTask.title,
+        priority: receivedTask.priority,
+        creationDate: receivedTask.creationDate,
+        dueDate: receivedTask.dueDate,
+        isRepeatingTask: receivedTask.isRepeatingTask,
+        isDone: receivedTask.isDone,
+        userId: receivedTask.userId,
+      });
+
+      Task.updateOne({ _id: req.params.id }, updatedTask)
+        .then(() => {
+          console.log("Task updated :");
+          console.log(updatedTask);
           res.status(201).json({
             message: "Task updated successfully!",
           });
@@ -91,6 +182,8 @@ taskRouter.put("/:id", async (req, res) => {
   });
 });
 
+//route: DELETE {BaseUrl}/tasks/{id}
+//description: delete task
 taskRouter.delete("/:id", async (req, res) => {
   Task.findOne({ _id: req.params.id }).then((task) => {
     if (req.body.userId == task.userId) {
@@ -116,3 +209,12 @@ taskRouter.delete("/:id", async (req, res) => {
     }
   });
 });
+
+// Helpers:
+
+function ComputeNextDueDate(creationDate: Date, dueDate: Date): Date {
+  const interval = dueDate.getTime() - creationDate.getTime();
+  const newDate = new Date(dueDate.getTime() + interval);
+
+  return newDate;
+}

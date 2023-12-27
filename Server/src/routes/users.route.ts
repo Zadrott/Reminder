@@ -6,6 +6,8 @@ import { User } from "../models/users";
 
 export const userRouter = express.Router();
 
+//route: POST {BaseUrl}/users/login
+//description: validate credentials and return a token to be used for secure routes (routers using auth middleware)
 userRouter.post("/login", async (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
@@ -54,6 +56,8 @@ userRouter.post("/login", async (req, res) => {
     });
 });
 
+//route: POST {BaseUrl}/users/register
+//description: create a new user and hash password
 userRouter.post("/register", async (req, res) => {
   bcrypt
     .hash(req.body.password, 10)
