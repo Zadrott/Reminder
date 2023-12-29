@@ -29,8 +29,8 @@ connect(
     app.use("/tasks", taskRouter);
     app.use("/users", userRouter);
 
-    app.listen(PORT ?? 8090, () => {
-      console.log(`Server running at http://localhost:${PORT ?? 8090}...`);
+    app.listen(PORT ?? 80, () => {
+      console.log(`Server running at http://localhost:${PORT ?? 80}...`);
     });
   })
   .catch((error) => console.error(error));

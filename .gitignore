@@ -1,9 +1,11 @@
-Server/.env
-Server/node_modules/*
-Server/package-lock.json
+#IDE
+**/.vscode/
+**/.angular/
 
-App/.vscode/*
-App/node_modules/*
-App/package-lock.json
-App/.angular/cache/*
-App/dist/*
+#JS
+**/package-lock.json
+**/node_modules/
+**/dist/*
+
+#Env (sensitive)
+**/.env
