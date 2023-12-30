@@ -23,15 +23,6 @@ input:-webkit-autofill:active {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.stretch {
-  flex: 1 1 auto;
-}
-
 .push-left {
   margin-left: auto;
 }
