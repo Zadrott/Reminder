@@ -22,3 +22,20 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: var(--mat-ripple-color);
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.stretch {
+  flex: 1 1 auto;
+}
+
+.push-left {
+  margin-left: auto;
+}
+
+.push-top {
+  margin-top: auto;
+}

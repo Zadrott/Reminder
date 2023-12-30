@@ -19,4 +19,13 @@
 
 .topnav-buttons {
   padding-left: 5%;
+  display: flex;
+}
+
+.stretch-container {
+  display: flex;
+  align-items: stretch;
+  align-content: stretch;
+  height: 100%;
+  flex-direction: column;
 }

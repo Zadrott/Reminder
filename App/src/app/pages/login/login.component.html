@@ -86,4 +86,8 @@
       </div>
     </form>
   </mat-card-content>
+  
+  @if (error) {
+  <mat-error>{{ error }}</mat-error>
+  }
 </mat-card>

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, map, shareReplay } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
@@ -40,6 +41,7 @@ export class LoginComponent {
 
   hidePasswords = true;
   isRegistering = false;
+  error = '';
 
   loginForm = this.formBuilder.nonNullable.group({
     email: ['', [Validators.email, Validators.required]],
@@ -48,14 +50,33 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private snackBar: MatSnackBar,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   onSubmit() {
+    const { email, password } = this.loginForm.getRawValue();
+
     console.log('Submit:', this.loginForm.value);
 
-    const { email, password } = this.loginForm.getRawValue();
-    this.authService.login(email, password).subscribe();
+    this.authService.login(email, password).subscribe({
+      next: (res) => {
+        console.log('logged in successfully !', res);
+        this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        console.error(err);
+
+        if (err.status == 401) {
+          this.snackBar.open('Incorrect email or password', 'Dismiss', {
+            duration: 8000,
+          });
+        }
+
+        this.error = err.statusText;
+      },
+    });
   }
 
   register() {
@@ -67,9 +88,11 @@ export class LoginComponent {
 
   onRegistering() {
     this.isRegistering = true;
+    this.error = '';
   }
 
   onBackToLogIn() {
     this.isRegistering = false;
+    this.error = '';
   }
 }
