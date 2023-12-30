@@ -72,6 +72,10 @@ export class LoginComponent {
           this.snackBar.open('Incorrect email or password', 'Dismiss', {
             duration: 8000,
           });
+        } else {
+          this.snackBar.open(err.message, 'Dismiss', {
+            duration: 12000,
+          });
         }
 
         this.error = err.statusText;
