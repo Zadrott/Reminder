@@ -1,0 +1,89 @@
+<mat-card>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <h2>Log In</h2>
+
+      <mat-form-field>
+        <mat-label for="email-input">Email</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          id="email-input"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder="example@mail.com"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="password-input">Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          id="password-input"
+          name="password"
+          [type]="hidePasswords ? 'password' : 'text'"
+          autocomplete="current-password"
+          required
+          placeholder="******"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hidePasswords = !hidePasswords"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePasswords"
+        >
+          <mat-icon>{{
+            hidePasswords ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div
+        id="buttons"
+        [className]="(isHandset$ | async) ? 'mobile-buttons' : ''"
+      >
+        @if(isRegistering){
+        <button
+          mat-raised-button
+          color="accent"
+          type="button"
+          [disabled]="!loginForm.valid"
+          (click)="register()"
+        >
+          Register
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          type="button"
+          (click)="onBackToLogIn()"
+        >
+          Back to log in
+        </button>
+        } @else {
+        <button
+          mat-raised-button
+          color="accent"
+          type="submit"
+          [disabled]="!loginForm.valid"
+        >
+          Sign In
+        </button>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="onRegistering()"
+        >
+          Register
+        </button>
+        }
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

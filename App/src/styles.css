@@ -13,3 +13,12 @@ body {
 main {
   height: 100%;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--mat-ripple-color);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
