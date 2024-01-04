@@ -1,20 +1,27 @@
 mat-card {
-  width: min(25em, 60%);
-  margin: 3em auto;
-  padding: min(1em, 1%);
-  text-align: center;
+  width: min(25rem, 60%);
+  padding: min(1rem, 1%);
 }
 
 mat-form-field {
   display: block;
 }
 
-#buttons {
-  display: flex;
-  justify-content: space-between;
+.center {
+  margin: 3rem auto;
+  text-align: center;
 }
 
 .mobile-buttons {
   flex-direction: column;
-  gap: 0.8em;
+  gap: 0.6rem;
+}
+
+.logo {
+  width: 10rem;
+}
+
+#buttons {
+  display: flex;
+  justify-content: space-between;
 }

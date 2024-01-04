@@ -8,6 +8,8 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--mat-sidenav-content-background-color);
+  color: var(--mat-tree-node-text-color);
 }
 
 main {
