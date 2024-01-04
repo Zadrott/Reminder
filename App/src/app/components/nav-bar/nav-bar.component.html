@@ -23,7 +23,8 @@
         <a mat-list-item routerLink="/" (click)="drawer.toggle()">Home</a>
         <a mat-list-item routerLink="/about" (click)="drawer.toggle()">About</a>
         <button
-          mat-button
+          id="logout-mobile"
+          mat-raised-button
           color="warn"
           class="push-top"
           (click)="drawer.toggle(); logout()"

@@ -38,3 +38,8 @@
 .stretch {
   flex: 1 1 auto;
 }
+
+#logout-mobile {
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}
