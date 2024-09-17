@@ -1,23 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 html,
 body {
+  --main-bg-color: #303030;
+  --secondary-bg-color: #424242;
+  --primary-color: #7b1fa2;
+  --secondary-color: #69f0ae;
+  --warn-color: #f44336;
+  --text-color: #ffffff;
+
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: var(--mat-sidenav-content-background-color);
-  color: var(--mat-tree-node-text-color);
+  background-color: var(--main-bg-color);
+  color: var(--text-color);
 }
 
-main {
-  height: 100%;
-}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-background-clip: text;
-  -webkit-text-fill-color: var(--mat-ripple-color);
+  -webkit-text-fill-color: var(--text-color);
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 

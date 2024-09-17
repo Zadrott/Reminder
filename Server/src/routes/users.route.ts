@@ -63,6 +63,7 @@ userRouter.post("/register", async (req, res) => {
     .hash(req.body.password, 10)
     .then((hash) => {
       const user = new User({
+        //TODO : Add name
         email: req.body.email,
         password: hash,
       });

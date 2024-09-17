@@ -1,0 +1,21 @@
+h1 {
+  font-size: 3rem;
+  margin: 2rem;
+  color: var(--secondary-color);
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.dashboard-card {
+  margin: 2rem;
+  max-width: 900px;
+}
+
+.more-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+}

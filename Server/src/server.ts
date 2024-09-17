@@ -26,6 +26,8 @@ connect(
     app.use(cors());
     app.use(express.json());
 
+    //TODO: Add swagger
+
     app.use("/tasks", taskRouter);
     app.use("/users", userRouter);
 
