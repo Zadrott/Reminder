@@ -9,3 +9,7 @@
 
 #Env (sensitive)
 **/.env
+**/environment.ts
+
+#Temp (angular tests)
+**.spec.ts
