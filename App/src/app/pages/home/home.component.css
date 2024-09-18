@@ -1,12 +1,12 @@
 h1 {
   font-size: 3rem;
   margin: 2rem;
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 h2 {
   font-size: 2rem;
-  color: var(--primary-color);
+  color: var(--secondary-color);
 }
 
 .dashboard-card {

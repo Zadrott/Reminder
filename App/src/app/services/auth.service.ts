@@ -27,6 +27,7 @@ export class AuthService {
     const userId = localStorage.getItem(environment.USER_ID_KEY);
     const tokenExpire = localStorage.getItem(environment.USER_EXPIRE_KEY);
 
+    //TODO: Fix expire
     if (token && userId && tokenExpire) {
       const loadedUser: UserData = {
         token: token,

@@ -4,6 +4,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
+
+import { TaskData, TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-home',
@@ -19,26 +22,21 @@ import { AsyncPipe } from '@angular/common';
   ],
 })
 export class HomeComponent {
-  // TODO : Fetch tasks from API
-  tasks = [
-    {
-      title: 'Card 1',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu hendrerit dolor',
-    },
-    {
-      title: 'Card 2',
-      content: 'Duis arcu ante, consectetur eu gravida quis, placerat et arcu',
-    },
-    {
-      title: 'Card 3',
-      content:
-        'Nullam in sagittis est. Vivamus lacinia sem nibh, at maximus neque scelerisque mollis. Sed nec elit ipsum. Suspendisse tincidunt turpis lectus. Suspendisse eleifend porttitor tortor, tristique rutrum augue cursus ut. Sed semper eleifend faucibus.',
-    },
-    {
-      title: 'Card 4',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eu hendrerit dolor',
-    },
-  ];
+  tasks$: Observable<TaskData[]> = new Observable();
+
+  constructor(private taskService: TaskService) {}
+
+  ngOnInit(): void {
+    this.fetchTasks();
+  }
+
+  deleteTask(id: string) {
+    this.taskService.deleteTask(id).subscribe({
+      next: () => this.fetchTasks(),
+    });
+  }
+
+  private fetchTasks(): void {
+    this.tasks$ = this.taskService.getAllTasks();
+  }
 }
