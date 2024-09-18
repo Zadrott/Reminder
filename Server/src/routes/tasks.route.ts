@@ -10,7 +10,7 @@ taskRouter.use(authMiddleware);
 //route: GET {BaseUrl}/tasks/
 //description: get all tasks
 taskRouter.get("/", async (_req, res) => {
-  Task.find()
+  Task.find({ userId: _req.body.userId })
     .then((tasks) => {
       console.log(`All tasks returned`);
       console.log(tasks);
