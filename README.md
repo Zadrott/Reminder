@@ -2,7 +2,7 @@
 ## Introduction
 Generic reminder app
 
-This project is mainly intended for practicing some stuff I encountered during my technology watch and may also serve as a basis /  MVP for futur projects
+This project is mainly intended for practicing some stuff I encountered during my technology watch and may also serve as a basis /  MVP for future projects.
 
 ## Examples of tech I want to try or practice within this project 
 - Angular
@@ -15,6 +15,14 @@ This project is mainly intended for practicing some stuff I encountered during m
 - PWA
 - IndexedDB
 - Mobile apps
+
+## Next steps
+- Being able to create and modify tasks within the front end
+- Computing remaining time for tasks
+- Sending notifications when the due time is exceeded
+- Being able to reuse repeating tasks like weekly or monthly tasks
+- Rework desktop layout
+- Overall improvements and clean up
 
 ## Example env files
 ### App/environement.ts
