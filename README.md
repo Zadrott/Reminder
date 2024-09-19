@@ -1,5 +1,20 @@
 # Reminder
+## Introduction
 Generic reminder app
+
+This project is mainly intended for practicing some stuff I encountered during my technology watch and may also serve as a basis /  MVP for futur projects
+
+## Examples of tech I want to try or practice within this project 
+- Angular
+- Angular Material
+- Typescript
+- CSS
+- Express.js
+- MongoDB
+- Vite
+- PWA
+- IndexedDB
+- Mobile apps
 
 ## Example env files
 ### App/environement.ts
