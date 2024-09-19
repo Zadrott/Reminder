@@ -1,14 +1,14 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container>
   <mat-sidenav
     #drawer
-    class="sidenav"
+    class="full-width"
     fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     mode="over"
     autoFocus="false"
   >
     @if (isHandset$ | async) {
-    <div class="stretch-container">
+    <div class="flex-col full-height">
       <mat-toolbar color="primary">
         <h2>Menu</h2>
         <button
@@ -37,7 +37,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="space-between">
       @if (isHandset$ | async) {
       <button
         type="button"
@@ -49,17 +49,22 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
 
-      <span routerLink="/" style="cursor: pointer">Reminder App</span>
+      <span routerLink="/" class="pointer"> Reminder App </span>
       } @else {
-      <span routerLink="/" style="cursor: pointer">Reminder App</span>
+      <span routerLink="/" class="pointer logo">
+        <h2>Reminder App</h2>
+      </span>
 
-      <span class="topnav-buttons stretch">
-        <a mat-button routerLink="/">Home</a>
-        <a mat-button routerLink="/about">About</a>
-        <button mat-button color="warn" class="push-left" (click)="logout()">
+      <div class="stretch space-between">
+        <span>
+          <a mat-button routerLink="/">Home</a>
+          <a mat-button routerLink="/about">About</a>
+        </span>
+
+        <button mat-button color="warn" class="" (click)="logout()">
           Log out
         </button>
-      </span>
+      </div>
       }
     </mat-toolbar>
     <router-outlet class="app"></router-outlet>

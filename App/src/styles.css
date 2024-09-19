@@ -20,7 +20,6 @@ body {
   color: var(--text-color);
 }
 
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -30,10 +29,23 @@ input:-webkit-autofill:active {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.space-between{
+  display: flex;
+  justify-content: space-between;
+}
+
+.stretch {
+  flex: 1 1 auto;
+}
+
 .push-left {
   margin-left: auto;
 }
 
 .push-top {
   margin-top: auto;
+}
+
+.pointer {
+  cursor: pointer;
 }
