@@ -9,10 +9,10 @@ taskRouter.use(authMiddleware);
 
 //route: GET {BaseUrl}/tasks/
 //description: get all tasks
-taskRouter.get("/", async (_req, res) => {
-  Task.find({ userId: _req.body.userId })
+taskRouter.get("/", async (req, res) => {
+  Task.find({ userId: req.body.userId })
     .then((tasks) => {
-      console.log(`All tasks returned`);
+      console.log(`All tasks returned for user ${req.body.userId}`);
       console.log(tasks);
       res.status(200).json(tasks);
     })
@@ -49,7 +49,7 @@ taskRouter.post("/", async (req, res) => {
   const task = new Task({
     title: receivedTask.title,
     priority: receivedTask.priority,
-    creationDate: receivedTask.creationDate,
+    creationDate: new Date(),
     dueDate: receivedTask.dueDate,
     isRepeatingTask: receivedTask.isRepeatingTask,
     isDone: receivedTask.isDone ?? false,
@@ -61,9 +61,18 @@ taskRouter.post("/", async (req, res) => {
     .then(() => {
       console.log("New task created :");
       console.log(task);
-      res.status(201).json({
-        message: "Task created successfully!",
-      });
+
+      Task.find({ userId: req.body.userId })
+        .then((tasks) => {
+          console.log(`All tasks returned for user ${req.body.userId}`);
+          res.status(201).json(tasks);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(400).json({
+            error: error,
+          });
+        });
     })
     .catch((error) => {
       console.error(error);
@@ -107,7 +116,7 @@ taskRouter.post("/:id/complete", async (req, res) => {
         const newTask = new Task({
           title: updatedTask.title,
           priority: updatedTask.priority,
-          creationDate: updatedTask.dueDate,
+          creationDate: new Date(),
           dueDate: ComputeNextDueDate(
             updatedTask.creationDate,
             updatedTask.dueDate
@@ -131,9 +140,17 @@ taskRouter.post("/:id/complete", async (req, res) => {
           });
       }
 
-      res.status(201).json({
-        message: "Task completed successfully!",
-      });
+      Task.find({ userId: req.body.userId })
+        .then((tasks) => {
+          console.log(`All tasks returned for user ${req.body.userId}`);
+          res.status(200).json(tasks);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(400).json({
+            error: error,
+          });
+        });
     } else {
       res.status(400).json({
         error: "You can't complete a task that belongs to someone else",
@@ -164,9 +181,18 @@ taskRouter.put("/:id", async (req, res) => {
         .then(() => {
           console.log("Task updated :");
           console.log(updatedTask);
-          res.status(201).json({
-            message: "Task updated successfully!",
-          });
+
+          Task.find({ userId: req.body.userId })
+            .then((tasks) => {
+              console.log(`All tasks returned for user ${req.body.userId}`);
+              res.status(200).json(tasks);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(400).json({
+                error: error,
+              });
+            });
         })
         .catch((error) => {
           console.error(error);
@@ -192,9 +218,18 @@ taskRouter.delete("/:id", async (req, res) => {
         .then(() => {
           console.log("Task deleted :");
           console.log(task);
-          res.status(200).json({
-            message: "Task deleted successfully!",
-          });
+
+          Task.find({ userId: req.body.userId })
+            .then((tasks) => {
+              console.log(`All tasks returned for user ${req.body.userId}`);
+              res.status(200).json(tasks);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(400).json({
+                error: error,
+              });
+            });
         })
         .catch((error) => {
           console.error(error);
