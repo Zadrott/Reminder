@@ -9,6 +9,14 @@ h2 {
   color: var(--secondary-color);
 }
 
+.top-section {
+  align-items: center;
+}
+
+.top-section button {
+  margin-right: 2rem;
+}
+
 .dashboard-card {
   margin: 2rem;
   max-width: 900px;

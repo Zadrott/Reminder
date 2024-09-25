@@ -1,0 +1,44 @@
+<div>
+  <div class="header center">
+    <h1>Create new task</h1>
+  </div>
+
+  <mat-card class="center">
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit()" [formGroup]="createTaskForm">
+        <mat-form-field>
+          <mat-label for="title-input">Title</mat-label>
+          <input
+            matInput
+            formControlName="title"
+            id="title-input"
+            name="title"
+            type="text"
+            required
+            placeholder="task title"
+          />
+        </mat-form-field>
+        <div
+          id="buttons"
+          [className]="(isHandset$ | async) ? 'mobile-buttons' : ''"
+        >
+          <button
+            mat-raised-button
+            color="accent"
+            type="submit"
+            [disabled]="!createTaskForm.valid"
+          >
+            Create
+          </button>
+          <button mat-raised-button color="warn" type="button" routerLink="/">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+
+    @if (error) {
+    <mat-error>{{ error }}</mat-error>
+    }
+  </mat-card>
+</div>

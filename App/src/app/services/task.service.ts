@@ -14,10 +14,10 @@ export interface TaskData {
   isDone: boolean;
 }
 
-enum Priority {
-  Low,
-  Medium,
-  High,
+export enum Priority {
+  Low = 'low',
+  Medium = 'medium',
+  High = 'high',
 }
 
 @Injectable({
@@ -36,9 +36,6 @@ export class TaskService {
 
     this.httpClient
       .get<TaskData[]>(`${environment.API_URL}/tasks`, { headers })
-      .pipe(
-        catchError(this.handleError<TaskData[]>(`error while fetching data`))
-      )
       .subscribe((receivedTasks) => {
         console.log('Tasks fetched from the API:', receivedTasks);
         this.tasks$.next(receivedTasks);
@@ -50,19 +47,50 @@ export class TaskService {
     return this.tasks$;
   }
 
-  deleteTask(id: string): Observable<string> {
+  createTask(
+    title: string,
+    priority: Priority,
+    isRepeatingTask: boolean,
+    dueDate: Date
+  ): any {
     const token = localStorage.getItem(environment.USER_TOKEN_KEY);
     const headers = { Authorization: 'Bearer ' + token };
-    return this.httpClient.delete(`${environment.API_URL}/tasks/${id}`, {headers: headers, responseType: 'text'})
+
+    const task = {
+      title,
+      priority,
+      isRepeatingTask,
+      dueDate,
+    };
+
+    return this.httpClient
+      .post<TaskData[]>(`${environment.API_URL}/tasks/`, task, {
+        headers: headers,
+      })
+      .pipe(
+        map((res: any) => {
+          console.log('Result:', res);
+          this.tasks$.next(res);
+
+          return res;
+        })
+      );
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: better job of transforming error for user consumption
-      console.error(`${operation} failed: ${error.message}`);
+  deleteTask(id: string): any {
+    const token = localStorage.getItem(environment.USER_TOKEN_KEY);
+    const headers = { Authorization: 'Bearer ' + token };
+    return this.httpClient
+      .delete<TaskData[]>(`${environment.API_URL}/tasks/${id}`, {
+        headers: headers,
+      })
+      .pipe(
+        map((res: any) => {
+          console.log('Result:', res);
+          this.tasks$.next(res);
 
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+          return res;
+        })
+      );
   }
 }

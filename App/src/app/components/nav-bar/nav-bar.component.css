@@ -21,6 +21,11 @@
   flex-direction: column;
 }
 
+.mat-sidenav .mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
 #logout-mobile {
   margin: auto 1.5rem 1rem;
 }

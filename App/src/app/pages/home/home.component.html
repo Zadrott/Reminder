@@ -1,5 +1,11 @@
 <div>
-  <h1>Daily Tasks</h1>
+  <section class="top-section space-between" >
+    <h1>Daily Tasks</h1>
+    <button mat-fab extended routerLink="/tasks/create">
+      <mat-icon>add</mat-icon>
+      Add new task
+    </button>
+  </section>
 
   @for ((task of tasks$ | async) ; track tasks$) {
   <mat-card class="dashboard-card">

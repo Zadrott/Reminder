@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 import { TaskData, TaskService } from '../../services/task.service';
 
@@ -19,6 +20,7 @@ import { TaskData, TaskService } from '../../services/task.service';
     MatButtonModule,
     MatCardModule,
     AsyncPipe,
+    RouterLink,
   ],
 })
 export class HomeComponent {
@@ -32,7 +34,12 @@ export class HomeComponent {
 
   deleteTask(id: string) {
     this.taskService.deleteTask(id).subscribe({
-      next: () => this.fetchTasks(),
+      next: (_: any) => {
+        console.log('task removed successfully !');
+      },
+      error: (err: any) => {
+        console.error(err);
+      },
     });
   }
 
