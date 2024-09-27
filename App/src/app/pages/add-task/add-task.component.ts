@@ -5,6 +5,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,12 +21,14 @@ import { TaskService, Priority } from '../../services/task.service';
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatSelectModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,
     MatCardModule,
     RouterLink,
     AsyncPipe,
+    MatCheckboxModule,
   ],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.css',

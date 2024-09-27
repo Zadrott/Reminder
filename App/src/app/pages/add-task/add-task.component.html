@@ -14,10 +14,30 @@
             id="title-input"
             name="title"
             type="text"
-            required
             placeholder="task title"
           />
         </mat-form-field>
+
+        <mat-form-field>
+          <mat-label for="priority-input">Priority</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option value="low">Low</mat-option>
+            <mat-option value="medium">Medium</mat-option>
+            <mat-option value="high">High</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label for="dueTime-input">Due date</mat-label>
+          <input
+            matInput
+            formControlName="dueTime"
+            id="dueTime-input"
+            name="dueTime"
+            type="date"
+          />
+        </mat-form-field>
+
         <div
           id="buttons"
           [className]="(isHandset$ | async) ? 'mobile-buttons' : ''"
