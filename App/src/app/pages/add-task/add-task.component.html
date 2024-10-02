@@ -3,7 +3,7 @@
     <h1>Create new task</h1>
   </div>
 
-  <mat-card class="center">
+  <mat-card class="center card">
     <mat-card-content>
       <form (ngSubmit)="onSubmit()" [formGroup]="createTaskForm">
         <mat-form-field>
@@ -27,6 +27,25 @@
           </mat-select>
         </mat-form-field>
 
+        <div class="checkbox">
+          <p>Is periodic task ?</p>
+          <mat-checkbox
+            class="example-margin"
+            formControlName="isRepeatingTask"
+          ></mat-checkbox>
+        </div>
+
+        @if (createTaskForm.value.isRepeatingTask) {
+        <mat-form-field>
+          <mat-label for="dueTime-input">Interval</mat-label>
+          <mat-select formControlName="interval">
+            <mat-option value="daily">Daily</mat-option>
+            <mat-option value="weekly">Weekly</mat-option>
+            <mat-option value="monthly">Monthly</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        } @else {
         <mat-form-field>
           <mat-label for="dueTime-input">Due date</mat-label>
           <input
@@ -37,11 +56,9 @@
             type="date"
           />
         </mat-form-field>
+        }
 
-        <div
-          id="buttons"
-          [className]="(isHandset$ | async) ? 'mobile-buttons' : ''"
-        >
+        <div id="buttons">
           <button
             mat-raised-button
             color="accent"
@@ -57,8 +74,8 @@
       </form>
     </mat-card-content>
 
-    @if (error) {
-    <mat-error>{{ error }}</mat-error>
+    @if (snackBarError) {
+    <mat-error>{{ snackBarError }}</mat-error>
     }
   </mat-card>
 </div>

@@ -20,6 +20,12 @@ export enum Priority {
   High = 'high',
 }
 
+export enum Interval {
+  Daily = 'daily',
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+}
+
 @Injectable({
   providedIn: 'root',
 })

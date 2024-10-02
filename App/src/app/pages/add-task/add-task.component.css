@@ -8,8 +8,21 @@ mat-form-field {
 }
 
 .center {
-  margin: 3rem auto;
   text-align: center;
+}
+
+.card {
+  margin: 3rem auto;
+}
+
+.checkbox {
+  display: flex;
+  gap: .5em;
+  align-items: center;
+}
+
+.checkbox p {
+  margin: 0;
 }
 
 .mobile-buttons {
