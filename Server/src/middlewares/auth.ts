@@ -21,12 +21,10 @@ export const authMiddleware = (
     if (req.body.userId && req.body.userId !== userId) {
       throw "Invalid user ID";
     } else {
-      req.body.userId = userId
+      req.body.userId = userId;
       next();
     }
-  } catch {
-    res.status(401).json({
-      error: new Error("Invalid request!"),
-    });
+  } catch (error) {
+    res.status(401).json(error);
   }
 };

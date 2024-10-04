@@ -78,7 +78,7 @@ export class LoginComponent {
           });
         }
 
-        this.error = err.statusText;
+        this.error = 'Failed to connect';
       },
     });
   }
@@ -87,7 +87,27 @@ export class LoginComponent {
     console.log('Register:', this.loginForm.value);
 
     const { email, password } = this.loginForm.getRawValue();
-    this.authService.register(email, password).subscribe();
+    this.authService.register(email, password).subscribe({
+      next: (res) => {
+        console.log('Logged in successfully !', res);
+        this.router.navigateByUrl('/');
+      },
+      error: (err) => {
+        console.error(err);
+
+        if (err.status == 401) {
+          this.snackBar.open('Incorrect email or password', 'Dismiss', {
+            duration: 8000,
+          });
+        } else {
+          this.snackBar.open(err.error.error, 'Dismiss', {
+            duration: 12000,
+          });
+        }
+
+        this.error = 'Failed to register';
+      },
+    });
   }
 
   onRegistering() {

@@ -111,7 +111,7 @@ export class AddTaskComponent {
 
           if (err.status == 400) {
             this.snackBar.open(
-              `Failed to create task: ${err.error.error._message}`,
+              `Failed to create task: ${err.error._message}`,
               'Dismiss',
               {
                 duration: 8000,

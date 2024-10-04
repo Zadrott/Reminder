@@ -26,12 +26,12 @@ userRouter.post("/login", async (req, res) => {
             });
           }
 
+          //Token expire in 24h
+          const expirationDate = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
+
           const token = jwt.sign(
-            { userId: user._id },
-            process.env.USERS_SECRET,
-            {
-              expiresIn: "24h",
-            }
+            { userId: user._id, exp: expirationDate },
+            process.env.USERS_SECRET
           );
 
           console.log("User logged in: ");
@@ -39,20 +39,17 @@ userRouter.post("/login", async (req, res) => {
           res.status(200).json({
             userId: user._id,
             token: token,
+            expire: expirationDate,
           });
         })
         .catch((error) => {
           console.error(error);
-          res.status(500).json({
-            error: error,
-          });
+          res.status(500).json(error);
         });
     })
     .catch((error) => {
       console.error(error);
-      res.status(500).json({
-        error: error,
-      });
+      res.status(500).json(error);
     });
 });
 
@@ -86,9 +83,6 @@ userRouter.post("/register", async (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      // TODO: Fix serialization issue (client receive "error: {}")
-      res.status(500).json({
-        error: error,
-      });
+      res.status(500).json(error);
     });
 });

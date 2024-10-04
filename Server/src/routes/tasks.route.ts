@@ -18,9 +18,7 @@ taskRouter.get("/", async (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-      res.status(400).json({
-        error: error,
-      });
+      res.status(400).json(error);
     });
 });
 
@@ -36,9 +34,7 @@ taskRouter.get("/:id", async (req, res) => {
       res.status(200).json(task);
     })
     .catch((error) => {
-      res.status(404).json({
-        error: error,
-      });
+      res.status(404).json(error);
     });
 });
 
@@ -69,16 +65,12 @@ taskRouter.post("/", async (req, res) => {
         })
         .catch((error) => {
           console.error(error);
-          res.status(400).json({
-            error: error,
-          });
+          res.status(400).json(error);
         });
     })
     .catch((error) => {
       console.error(error);
-      res.status(400).json({
-        error: error,
-      });
+      res.status(400).json(error);
     });
 });
 
@@ -106,9 +98,7 @@ taskRouter.post("/:id/complete", async (req, res) => {
         })
         .catch((error) => {
           console.error(error);
-          res.status(400).json({
-            error: error,
-          });
+          res.status(400).json(error);
         });
 
       //Create new task if needed
@@ -134,9 +124,7 @@ taskRouter.post("/:id/complete", async (req, res) => {
           })
           .catch((error) => {
             console.error(error);
-            res.status(400).json({
-              error: error,
-            });
+            res.status(400).json(error);
           });
       }
 
@@ -147,9 +135,7 @@ taskRouter.post("/:id/complete", async (req, res) => {
         })
         .catch((error) => {
           console.error(error);
-          res.status(400).json({
-            error: error,
-          });
+          res.status(400).json(error);
         });
     } else {
       res.status(400).json({
@@ -189,16 +175,12 @@ taskRouter.put("/:id", async (req, res) => {
             })
             .catch((error) => {
               console.error(error);
-              res.status(400).json({
-                error: error,
-              });
+              res.status(400).json(error);
             });
         })
         .catch((error) => {
           console.error(error);
-          res.status(400).json({
-            error: error,
-          });
+          res.status(400).json(error);
         });
     } else {
       res.status(400).json({
@@ -226,16 +208,12 @@ taskRouter.delete("/:id", async (req, res) => {
             })
             .catch((error) => {
               console.error(error);
-              res.status(400).json({
-                error: error,
-              });
+              res.status(400).json(error);
             });
         })
         .catch((error) => {
           console.error(error);
-          res.status(400).json({
-            error: error,
-          });
+          res.status(400).json(error);
         });
     } else {
       res.status(400).json({

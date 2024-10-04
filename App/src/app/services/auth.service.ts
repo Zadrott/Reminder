@@ -27,7 +27,6 @@ export class AuthService {
     const userId = localStorage.getItem(environment.USER_ID_KEY);
     const tokenExpire = localStorage.getItem(environment.USER_EXPIRE_KEY);
 
-    //TODO: Fix expire
     if (token && userId && tokenExpire) {
       const loadedUser: UserData = {
         token: token,
@@ -98,9 +97,14 @@ export class AuthService {
     return this.getCurrentUser().pipe(
       filter((user) => user !== undefined),
       map((isAuthenticated) => {
-        if (isAuthenticated) {
+        const isExpired =
+          !this.user.value?.expire ||
+          this.user.value?.expire < Math.floor(Date.now() / 1000);
+
+        if (isAuthenticated && !isExpired) {
           return true;
         } else {
+          alert('Your session is expired. Please relog in');
           return router.createUrlTree(['/login']);
         }
       })
@@ -113,7 +117,11 @@ export class AuthService {
     return this.getCurrentUser().pipe(
       filter((user) => user !== undefined),
       map((isAuthenticated) => {
-        if (isAuthenticated) {
+        const isExpired =
+          !this.user.value?.expire ||
+          this.user.value?.expire < Math.floor(Date.now() / 1000);
+
+        if (isAuthenticated && !isExpired) {
           return router.createUrlTree(['/']);
         } else {
           return true;
